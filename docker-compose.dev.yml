@@ -1,0 +1,53 @@
+version: '3.3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    image: gate-keeper/web:latest
+    volumes:
+      - ./:/root/gate-keeper
+      - /root/gate-keeper/node_modules
+    ports:
+      - 80:80
+    restart: always
+
+  rest:
+    build:
+      context: .
+      dockerfile: Dockerfile.rest
+    command: ["npm", "run", "start-be-debug"]
+    image: gate-keeper/rest:latest
+    volumes:
+      - ./:/root/gate-keeper
+      - /root/gate-keeper/node_modules
+    ports:
+      - 8080:8080
+      - 9229:9229
+    restart: always
+    depends_on:
+      - mongo
+
+  api:
+    build:
+        context: .
+        dockerfile: Dockerfile.api
+    image: gate-keeper/api:latest
+    volumes:
+        - ./:/root/gate-keeper
+    ports:
+        - 5000:5000
+    restart: always
+    depends_on:
+        - rest
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - ./mongodb/db:/data/db/
+    expose:
+      - '27017'
+    ports:
+      - 27017:27017
+    restart: always
