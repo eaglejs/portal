@@ -1,16 +1,35 @@
 version: '3.3'
 
 services:
+
+  proxy:
+    build:
+      context: .
+    command: ["nginx", "-g", "daemon off;"]
+    image: nginx
+    expose:
+      - '80'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    restart: always
+    depends_on:
+      - web
+      - api
+      - rest
+
   web:
     build:
       context: .
       dockerfile: Dockerfile.web
-    image: gate-keeper/web:latest
+    command: ["ng", "serve", "--host", "0.0.0.0", "--disable-host-check"]
+    image: portal/web:latest
     volumes:
-      - ./:/root/gate-keeper
-      - /root/gate-keeper/node_modules
+      - ./:/root/portal
+      - /root/portal/node_modules
     ports:
-      - 80:80
+      - 4200:4200
     restart: always
 
   rest:
@@ -18,13 +37,13 @@ services:
       context: .
       dockerfile: Dockerfile.rest
     command: ["npm", "run", "start-be-debug"]
-    image: gate-keeper/rest:latest
+    image: portal/rest:latest
     volumes:
-      - ./:/root/gate-keeper
-      - /root/gate-keeper/node_modules
+      - ./:/root/portal
+      - /root/portal/node_modules
     ports:
       - 8080:8080
-      - 9229:9229
+      - 9229:9299
     restart: always
     depends_on:
       - mongo
@@ -33,9 +52,9 @@ services:
     build:
         context: .
         dockerfile: Dockerfile.api
-    image: gate-keeper/api:latest
+    image: portal/api:latest
     volumes:
-        - ./:/root/gate-keeper
+        - ./:/root/portal
     ports:
         - 5000:5000
     restart: always
