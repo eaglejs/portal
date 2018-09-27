@@ -13,9 +13,7 @@ var routes = [
 ];
 
 // mongodb connection
-mongoose.connect("mongodb://mongo:27017/gatekeeper", {
-	useMongoClient: true
-});
+mongoose.connect("mongodb://mongo:27017/portal", {});
 var db = mongoose.connection;
 // mongo error
 db.on('error', console.error.bind(console, 'connection error:'));
