@@ -1,3 +1,20 @@
-<p>
-  login works!
-</p>
+<form (submit)="loginCtrl.login()">
+  <div class="login-wrapper">
+    <div>
+      <mat-form-field>
+        <label for="username">Username</label>
+        <input matInput id="username" type="text" [(ngModel)]="model.username" required />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <label for="password">Password</label>
+        <input matInput id="password" type="password" [(ngModel)]="model.password" required />
+      </mat-form-field>
+    </div>
+    <div class="text-right">
+      <button type="submit" (click)="login()">Login</button>
+    </div>
+
+  </div>
+</form>
