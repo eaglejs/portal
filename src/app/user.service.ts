@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -48,11 +54,21 @@ export class UserService {
   //   });
   // }
 
-  setUser(user) {
-    this.user = user;
-  }
+  // login(event): Observable<User> {
+  //   return this.http.post<User>('/rest/login/', this.model, httpOptions).pipe(
+  //     tap((user: User) => {
+  //       this.userService.setUser(user);
+  //       // TODO: navigate to dashboard
+  //     }),
+  //     catchError('Failed to login')
+  //   );
+  // }
 
-  getUser() {
-    return this.user;
-  }
+  // setUser(user) {
+  //   this.user = user;
+  // }
+
+  // getUser() {
+  //   return this.user;
+  // }
 }

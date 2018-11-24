@@ -5,8 +5,9 @@ services:
   proxy:
     build:
       context: .
+      dockerfile: Dockerfile.nginx
     command: ["nginx", "-g", "daemon off;"]
-    image: nginx
+    image: nginx:latest
     expose:
       - '80'
     volumes:
@@ -30,6 +31,10 @@ services:
       - /root/portal/node_modules
     ports:
       - 4200:4200
+      - 9876:9876
+    environment:
+      - DISPLAY=:99
+      - CHROME_BIN=chromium
     restart: always
 
   rest:
