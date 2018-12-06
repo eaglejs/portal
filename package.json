@@ -10,7 +10,7 @@
     "start-be": "node ./src/service/app.js",
     "start-be-debug": "nodemon --inspect=0.0.0.0:9229 ./src/service/app.js",
     "test": "ng test --watch=false",
-    "test-coverage": "ng test --browsers=ChromeHeadless --code-coverage --watch=false",
+    "test-coverage": "ng test --code-coverage --watch=false",
     "test-watch": "ng test",
     "sonar-scanner": "sonar-scanner"
   },

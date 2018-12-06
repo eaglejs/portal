@@ -19,6 +19,22 @@ services:
       - web
       - api
       - rest
+
+  sonarqube:
+    build:
+      context: .
+      dockerfile: Dockerfile.sonarqube
+    ports:
+      - 9000:9000
+      - 9092:9092
+    volumes:
+      - $PWD/sonar:/opt/sonarqube/data
+    restart: always
+    depends_on:
+      - web
+      - api
+      - rest
+
   web:
     build:
       context: .
