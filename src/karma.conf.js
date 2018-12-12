@@ -1,6 +1,8 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+process.env.NO_PROXY = 'localhost, 0.0.0.0/4201, 0.0.0.0/9876';
+
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -8,6 +10,7 @@ module.exports = function(config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
+      require('karma-firefox-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
@@ -20,27 +23,15 @@ module.exports = function(config) {
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true,
       thresholds: {
+        emitWarning: false,
         global: {
-          lines: 80,
-          // statements: 80,
-          // branches: 80,
-          // functions: 80
+          lines: 85
         },
         each: {
-          lines: 80,
-          // statements: 80,
-          // branches: 80,
-          // functions: 80
+          lines: 85
         }
       }
     },
-    reporters: ['progress', 'kjhtml'],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['ChromeHeadless'],
-    singleRun: true,
     customLaunchers: {
       ChromeHeadless: {
         base: 'Chrome',
@@ -52,7 +43,18 @@ module.exports = function(config) {
           '--no-sandbox',
           '--remote-debugging-port=9222'
         ]
+      },
+      FirefoxHeadless: {
+        base: 'Firefox',
+        flags: ['-headless']
       }
-    }
+    },
+    reporters: ['progress', 'kjhtml'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: ['ChromeHeadless', 'FirefoxHeadless' ],
+    singleRun: true
   });
 };

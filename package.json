@@ -3,16 +3,18 @@
   "version": "0.0.0",
   "scripts": {
     "build": "ng build",
+    "docker-start": "ng serve --host 0.0.0.0 --disable-host-check",
     "e2e": "ng e2e",
     "lint": "ng lint",
     "ng": "ng",
+    "sonar-scanner": "sonar-scanner",
     "start": "ng serve",
     "start-be": "node ./src/service/app.js",
     "start-be-debug": "nodemon --inspect=0.0.0.0:9229 ./src/service/app.js",
     "test": "ng test --watch=false",
     "test-coverage": "ng test --code-coverage --watch=false",
-    "test-watch": "ng test",
-    "sonar-scanner": "sonar-scanner"
+    "test-coverage-ff": "ng test --code-coverage --watch=false --browsers FirefoxHeadless",
+    "test-watch": "ng test --browsers ChromeHeadless"
   },
   "private": true,
   "dependencies": {
@@ -51,6 +53,7 @@
     "karma": "~3.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "mongoose": "^5.2.17",

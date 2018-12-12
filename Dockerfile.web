@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node
 
 MAINTAINER Joshua Eagle
 
@@ -11,16 +11,13 @@ COPY . /root/portal
 
 WORKDIR /root/portal
 
-RUN npm install -g @angular/cli
-
 RUN npm install --silent
 
 # Install Chrome
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends chromium
+RUN apt-get update && apt-get install -y --no-install-recommends chromium iceweasel && apt-get clean
 
 ENV API_HOST api
 
 EXPOSE 4200
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+CMD ["npm", "run", "docker-start"]

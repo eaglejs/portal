@@ -1,12 +1,11 @@
 version: '3.3'
 
 services:
-
   proxy:
     build:
       context: .
       dockerfile: Dockerfile.nginx
-    command: ["nginx", "-g", "daemon off;"]
+    command: ['nginx', '-g', 'daemon off;']
     image: nginx:latest
     expose:
       - '80'
@@ -19,6 +18,7 @@ services:
       - web
       - api
       - rest
+    container_name: proxy
 
   sonarqube:
     build:
@@ -30,42 +30,57 @@ services:
     volumes:
       - $PWD/sonar:/opt/sonarqube/data
     restart: always
-    depends_on:
-      - web
-      - api
-      - rest
+    container_name: sonarqube
 
   web:
     build:
       context: .
       dockerfile: Dockerfile.web
-    command: ["ng", "serve", "--host", "0.0.0.0"]
+    command: ['npm', 'run', 'docker-start']
     image: portal/web:latest
     volumes:
       - ./:/root/portal
       - /root/portal/node_modules
     ports:
       - 4200:4200
+      - 9876:9876
+    environment:
+      - DISPLAY=:99
+      - CHROME_BIN=chromium
     restart: always
+    container_name: web
 
   rest:
+    build:
+      context: .
+      dockerfile: Dockerfile.rest
+    command: ['npm', 'run', 'start-be-debug']
     image: portal/rest:latest
     volumes:
       - ./:/root/portal
-      - node_modules:/root/portal/node_modules
+      - /root/portal/node_modules
     ports:
       - 8080:8080
+      - 9229:9299
     restart: always
     depends_on:
       - mongo
+      - api
+      - web
+      - sonarqube
+    container_name: rest
 
   api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
     image: portal/api:latest
     volumes:
       - ./:/root/portal
+    ports:
+      - 5000:5000
     restart: always
-    depends_on:
-      - rest
+    container_name: api
 
   mongo:
     image: mongo:latest
@@ -76,6 +91,4 @@ services:
     ports:
       - 27017:27017
     restart: always
-
-volumes:
-  node_modules:
+    container_name: mongo
