@@ -40,7 +40,6 @@ services:
     image: portal/web:latest
     volumes:
       - ./:/root/portal
-      - /root/portal/node_modules
     ports:
       - 4200:4200
       - 9876:9876
@@ -58,7 +57,6 @@ services:
     image: portal/rest:latest
     volumes:
       - ./:/root/portal
-      - /root/portal/node_modules
     ports:
       - 8080:8080
       - 9229:9299
