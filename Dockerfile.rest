@@ -6,11 +6,9 @@ WORKDIR /root/
 
 COPY . /root/portal
 
-WORKDIR /root/portal/
+WORKDIR /root/portal/src/service/
 
 RUN npm install --silent
-
-RUN npm install -g nodemon --silent
 
 EXPOSE 8080
 
