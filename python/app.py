@@ -25,7 +25,7 @@ tasks = [
 ]
 
 
-@app.route('/api/toggleGarageDoor', methods=['GET'])
+@app.route('/toggle-garage-door', methods=['GET'])
 def get_tasks():
 
     return jsonify({'door-status': gc.get_state()})

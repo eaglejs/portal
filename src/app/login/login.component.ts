@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
 
 @Component({
@@ -7,7 +9,7 @@ import { UserService } from '../user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  test = {};
   model = {
     username: '',
     password: '',
@@ -15,9 +17,11 @@ export class LoginComponent implements OnInit {
 
   constructor (
     //private userService: UserService,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
+    this.listenToTestCall();
   }
 
   // login(event): Observable<User> {
@@ -25,4 +29,11 @@ export class LoginComponent implements OnInit {
 
   // }
 
+  listenToTestCall(): void {
+    this.getTestCall().subscribe(test => this.test = test);
+  }
+
+  getTestCall(): Observable<any> {
+    return this.http.get<any>('http://localhost:8080/test');
+  }
 }

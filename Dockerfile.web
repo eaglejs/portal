@@ -11,10 +11,12 @@ COPY . /root/portal
 
 WORKDIR /root/portal
 
+RUN npm install -g @angular/cli
+
 RUN npm install --silent
 
 # Install Chrome
-RUN apt-get update && apt-get install -y --no-install-recommends chromium iceweasel && apt-get clean
+# RUN apt-get update && apt-get install -y --no-install-recommends chromium iceweasel && apt-get clean
 
 ENV API_HOST api
 

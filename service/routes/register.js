@@ -3,7 +3,7 @@ var router = express.Router();
 var User = require('../models/user');
 
 // POST /register
-router.post('/rest/register', function (req, res, next) {
+router.post('/register', function (req, res, next) {
 
     User.find().exec(function (error, data) {
         if (!data.length) {
@@ -101,8 +101,8 @@ router.post('/rest/register', function (req, res, next) {
     });
 });
 
-// POST /isRegistered
-router.post('/rest/isRegistered', function (req, res, next) {
+// POST /is-registered
+router.post('/is-registered', function (req, res, next) {
     // TO-DO: Check if there are users in the collection.
 
     User.find().exec(function (error, data) {

@@ -10,7 +10,7 @@ WORKDIR /root/portal/
 
 RUN pip install -r requirements.txt
 
-WORKDIR /root/portal/src/python
+WORKDIR /root/portal/python
 
 EXPOSE 5000
 

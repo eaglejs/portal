@@ -2,8 +2,14 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 
+router.get('/test', (req, res, next) => {
+  res.status(200).json({
+    "success": true
+  });
+});
+
 // POST /login
-router.post('/rest/login', function (req, res, next) {
+router.post('/login', function (req, res, next) {
 
     if (!!(req.body.username && req.body.password)) {
         User.authenticate(req.body.username, req.body.password, function (error, user) {
@@ -29,7 +35,7 @@ router.post('/rest/login', function (req, res, next) {
 });
 
 // GET /logout
-router.get('/rest/logout', function (req, res, next) {
+router.get('/logout', function (req, res, next) {
     if (req.session) {
         // devare session object
         req.session.destroy(function (err) {
@@ -43,7 +49,7 @@ router.get('/rest/logout', function (req, res, next) {
 });
 
 // POST /isLoggedIn
-router.post('/rest/isLoggedIn', function (req, res, next) {
+router.post('/is-logged-in', function (req, res, next) {
     if (req.session && req.session.userId) {
         User.findById(req.session.userId)
             .exec(function (error, user) {

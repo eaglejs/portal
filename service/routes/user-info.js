@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 
-// POST /getUserInformation
-router.post('/rest/getUserInformation', function (req, res, next) {
+// POST /get-user-information
+router.post('/user-information', function (req, res, next) {
     if (req.session && req.session.userId) {
         User.findById(req.session.userId)
             .exec(function (error, user) {

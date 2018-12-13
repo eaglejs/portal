@@ -4,9 +4,14 @@ MAINTAINER Joshua Eagle
 
 WORKDIR /root/
 
+# Update NPM
+RUN npm cache clean -f
+
 COPY . /root/portal
 
-WORKDIR /root/portal/src/service/
+WORKDIR /root/portal/service/
+
+RUN npm install -g nodemon
 
 RUN npm install --silent
 
