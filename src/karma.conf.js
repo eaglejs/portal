@@ -1,9 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-process.env.NO_PROXY = 'localhost, 0.0.0.0/4201, 0.0.0.0/9876';
-
-module.exports = function(config) {
+process.env.NO_PROXY = 'localhost, 0.0.0.0/4201, 0.0.0.0/9876';module.exports = function(config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
@@ -54,7 +52,8 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadless', 'FirefoxHeadless' ],
-    singleRun: true
+    browsers: [],
+    singleRun: true,
+    exclude: ['**/model/**']
   });
 };
