@@ -3,13 +3,27 @@
     <div>
       <mat-form-field>
         <label for="username">Username</label>
-        <input matInput id="username" type="text" name="username" [(ngModel)]="model.username" required />
+        <input
+          matInput
+          id="username"
+          type="text"
+          name="username"
+          [(ngModel)]="model.username"
+          required
+        />
       </mat-form-field>
     </div>
     <div>
       <mat-form-field>
         <label for="password">Password</label>
-        <input matInput id="password" type="password" name="password" [(ngModel)]="model.password" required />
+        <input
+          matInput
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="model.password"
+          required
+        />
       </mat-form-field>
     </div>
     <div class="text-right">
@@ -17,4 +31,4 @@
     </div>
   </div>
 </form>
-<h1>{{test.success}}</h1>
+<h1>{{ test.success }}</h1>
