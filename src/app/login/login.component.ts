@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -8,13 +9,22 @@ import { UserService } from '../user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  test = {};
-  model = {
-    username: '',
-    password: ''
-  };
+  loginFormControl: FormGroup;
 
-  constructor() {}
+  constructor(private formBuilder: FormBuilder) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loginFormControl = this.formBuilder.group({
+      password: ['', [Validators.required]],
+      username: ['', [Validators.required]]
+    });
+  }
+
+  getErrorMessage() {
+    return this.loginFormControl.get('username').hasError('required')
+      ? 'You must enter a value'
+      : this.loginFormControl.get('password').hasError('required')
+      ? 'Not a valid email'
+      : '';
+  }
 }
