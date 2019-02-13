@@ -112,8 +112,6 @@ import { NgModule } from '@angular/core';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule
-  ],
-
+  ]
 })
-
-export class MaterialModule{}
+export class MaterialModule {}

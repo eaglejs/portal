@@ -8,7 +8,6 @@ import { APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { GaragesComponent } from './garages/garages.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -19,7 +18,6 @@ import { MaterialModule } from './material';
   declarations: [
     AppComponent,
     DashboardComponent,
-    GaragesComponent,
     LoginComponent,
     RegisterComponent
   ],
@@ -31,6 +29,7 @@ import { MaterialModule } from './material';
     FormsModule,
     HttpClientModule,
     MaterialModule,
+    ReactiveFormsModule,
   ],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
   bootstrap: [AppComponent]
