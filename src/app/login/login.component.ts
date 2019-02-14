@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     return this.loginFormControl.get('username').hasError('required')
       ? 'You must enter a value'
       : this.loginFormControl.get('password').hasError('required')
-      ? 'Not a valid email'
+      ? 'You must enter a value'
       : '';
   }
 }

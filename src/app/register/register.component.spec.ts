@@ -2,11 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../material';
-import {
-  FormsModule,
-  FormBuilder,
-  ReactiveFormsModule
-} from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 import { RegisterComponent } from './register.component';
 
@@ -17,7 +13,13 @@ describe('RegisterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RegisterComponent],
-      imports: [FormsModule, MaterialModule, BrowserModule, BrowserAnimationsModule, ReactiveFormsModule],
+      imports: [
+        FormsModule,
+        MaterialModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule
+      ],
       providers: [FormBuilder]
     }).compileComponents();
   }));
