@@ -20,18 +20,18 @@ services:
   #     - rest
   #   container_name: nginx
 
-  sonarqube:
-    build:
-      context: .
-      dockerfile: Dockerfile.sonarqube
-    image: portal/sonarqube:latest
-    ports:
-      - 9000:9000
-      - 9092:9092
-    volumes:
-      - $PWD/sonar:/opt/sonarqube/data
-    restart: always
-    container_name: sonarqube
+  # sonarqube:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.sonarqube
+  #   image: portal/sonarqube:latest
+  #   ports:
+  #     - 9000:9000
+  #     - 9092:9092
+  #   volumes:
+  #     - $PWD/sonar:/opt/sonarqube/data
+  #   restart: always
+  #   container_name: sonarqube
 
   web:
     build:
