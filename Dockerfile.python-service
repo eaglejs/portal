@@ -1,6 +1,6 @@
 FROM python
 
-MAINTAINER Joshua Eagle
+MAINTAINER Joshua S. Eagle
 
 WORKDIR /root/
 
@@ -10,7 +10,7 @@ WORKDIR /root/portal/
 
 RUN pip install -r requirements.txt
 
-WORKDIR /root/python-service
+WORKDIR /root/portal/python-service
 
 EXPOSE 5000
 

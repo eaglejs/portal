@@ -1,6 +1,6 @@
 FROM node
 
-MAINTAINER Joshua Eagle
+MAINTAINER Joshua S. Eagle
 
 WORKDIR /root/
 

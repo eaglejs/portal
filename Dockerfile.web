@@ -1,6 +1,6 @@
 FROM node
 
-MAINTAINER Joshua Eagle
+MAINTAINER Joshua S. Eagle
 
 WORKDIR /root/
 
@@ -18,7 +18,7 @@ RUN npm install --silent
 # Install Chrome
 # RUN apt-get update && apt-get install -y --no-install-recommends chromium iceweasel && apt-get clean
 
-ENV API_HOST api
+ENV API_HOST python-service
 
 EXPOSE 4200
 
