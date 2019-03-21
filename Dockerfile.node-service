@@ -7,9 +7,9 @@ WORKDIR /root/
 # Update NPM
 RUN npm cache clean -f
 
-COPY . /root/portal
+COPY ./node-service /root/node-service/
 
-WORKDIR /root/portal/node-service/
+WORKDIR /root/node-service/
 
 RUN npm install -g nodemon
 

@@ -1,19 +1,19 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/tmp
-/out-tsc
-.scannerwork
-.coverage
-/sonar/**
+portal-app/dist
+portal-app/tmp
+portal-app/out-tsc
+portal-app/.scannerwork
+portal-app/.coverage
+portal-app/sonar/**
 
 # dependencies
-**/node_modules
+**/**/node_modules
 /mongodb/**
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/

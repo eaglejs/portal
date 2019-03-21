@@ -4,9 +4,9 @@ MAINTAINER Joshua S. Eagle
 
 WORKDIR /root/
 
-COPY . /root/portal/
+COPY ./python-service/ /root/python-service/
 
-WORKDIR /root/portal/
+WORKDIR /root/python-service/
 
 RUN pip install -r requirements.txt
 
