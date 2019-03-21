@@ -1,12 +1,12 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-portal-app/dist
-portal-app/tmp
-portal-app/out-tsc
-portal-app/.scannerwork
-portal-app/.coverage
-portal-app/sonar/**
+ng-app/dist
+ng-app/tmp
+ng-app/out-tsc
+ng-app/.scannerwork
+ng-app/.coverage
+ng-app/sonar/**
 
 # dependencies
 **/**/node_modules

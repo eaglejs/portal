@@ -7,9 +7,9 @@ services:
       context: .
       dockerfile: Dockerfile.web
     command: ['npm', 'run', 'docker-start']
-    image: portal/web:latest
+    image: portal/ng-app:latest
     volumes:
-      - ./portal-app/src/:/root/portal-app/src/
+      - ./ng-app/src/:/root/ng-app/src/
     ports:
       - 4200:4200
       - 9876:9876
@@ -17,7 +17,7 @@ services:
       - DISPLAY=:99
       - CHROME_BIN=chromium
     restart: always
-    container_name: web
+    container_name: ng-app
 
   node-service:
     build:

@@ -7,9 +7,9 @@ WORKDIR /root/
 # Update NPM
 RUN npm cache clean -f
 
-COPY ./portal-app /root/portal-app
+COPY ./ng-app /root/ng-app
 
-WORKDIR /root/portal-app
+WORKDIR /root/ng-app
 
 RUN npm install -g @angular/cli
 
