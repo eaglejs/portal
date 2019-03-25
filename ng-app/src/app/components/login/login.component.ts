@@ -27,4 +27,6 @@ export class LoginComponent implements OnInit {
       ? 'You must enter a value'
       : '';
   }
+
+  login($event) {}
 }

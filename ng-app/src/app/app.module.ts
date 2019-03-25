@@ -1,15 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { Component, NgModule } from '@angular/core';
-import { CdkTableModule } from '@angular/cdk/table';
-import { CdkTreeModule } from '@angular/cdk/tree';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material';
@@ -29,7 +27,7 @@ import { MaterialModule } from './material';
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
   bootstrap: [AppComponent]

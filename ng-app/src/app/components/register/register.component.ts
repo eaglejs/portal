@@ -28,4 +28,6 @@ export class RegisterComponent implements OnInit {
       ? 'Not a valid email'
       : '';
   }
+
+  register() {}
 }
