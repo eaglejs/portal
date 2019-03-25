@@ -58,34 +58,15 @@ services:
     restart: always
     container_name: mongo
 
-  # nginx:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.nginx
-  #   command: ['nginx', '-g', 'daemon off;']
-  #   image: portal/nginx:latest
-  #   expose:
-  #     - '80'
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #   ports:
-  #     - 80:80
-  #   restart: always
-  #   depends_on:
-  #     - web
-  #     - api
-  #     - rest
-  #   container_name: nginx
-
-  # sonarqube:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.sonarqube
-  #   image: portal/sonarqube:latest
-  #   ports:
-  #     - 9000:9000
-  #     - 9092:9092
-  #   volumes:
-  #     - $PWD/sonar:/opt/sonarqube/data
-  #   restart: always
-  #   container_name: sonarqube
+  sonarqube:
+    build:
+      context: .
+      dockerfile: Dockerfile.sonarqube
+    image: portal/sonarqube:latest
+    ports:
+      - 9000:9000
+      - 9092:9092
+    volumes:
+      - $PWD/sonar:/opt/sonarqube/data
+    restart: always
+    container_name: sonarqube
