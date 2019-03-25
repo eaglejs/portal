@@ -40,6 +40,7 @@ testem.log
 /typings
 *.pyc
 /*-service/sonar/**
+/sonar/**
 
 # System Files
 .DS_Store
