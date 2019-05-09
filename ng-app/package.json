@@ -12,7 +12,6 @@
     "start": "ng serve",
     "test": "ng test --watch=false",
     "test-coverage": "ng test --code-coverage --watch=false --browsers ChromeHeadless",
-    "test-coverage-ff": "ng test --code-coverage --watch=false --browsers FirefoxHeadless",
     "test-watch": "ng test --browsers ChromeHeadless"
   },
   "private": true,
