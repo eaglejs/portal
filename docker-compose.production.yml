@@ -8,7 +8,7 @@ services:
     command: ["npm", "run", "start-be"]
     image: portal/node-service:latest
     volumes:
-      - ./node-service:/root/node-service
+      - ./node-service/src:/root/node-service/src
     ports:
       - 8080
     restart: always
@@ -41,6 +41,9 @@ services:
     container_name: mongo
 
   nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
     image: portal/nginx:latest
     volumes:
       - ./ng-app/dist/portal/:/usr/share/nginx/html:ro
@@ -55,6 +58,9 @@ services:
     container_name: nginx
 
   reverseproxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.reverseproxy
     image: portal/nginx:latest
     volumes:
       - ./nginx.reverseproxy.conf:/etc/nginx/nginx.conf:ro
