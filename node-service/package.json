@@ -4,8 +4,8 @@
   "description": "restful services for portal app",
   "main": "app.js",
   "scripts": {
-    "start-be": "node ./app.js",
-    "start-be-debug": "nodemon --inspect=0.0.0.0:9229 ./app.js",
+    "start-be": "node ./src/app.js",
+    "start-be-debug": "nodemon --inspect=0.0.0.0:9229 ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Joshua S. Eagle <joshuaseagle@gmail.com>",
