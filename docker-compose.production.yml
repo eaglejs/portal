@@ -8,7 +8,7 @@ services:
     command: ["npm", "run", "start-be"]
     image: portal/node-service:latest
     volumes:
-      - ./node-service:/root/portal/node-service
+      - ./node-service:/root/node-service
     ports:
       - 8080
     restart: always
@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile.python-service
     image: portal/python-service:latest
     volumes:
-      - ./python-service:/root/portal/python-service
+      - ./python-service:/root/python-service
     ports:
       - 5000
     depends_on:

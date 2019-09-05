@@ -1,6 +1,6 @@
 FROM python:3.4-slim-jessie
 
-MAINTAINER Joshua S. Eagle
+LABEL Joshua S. Eagle
 
 WORKDIR /root/
 
@@ -9,8 +9,6 @@ COPY ./python-service/ /root/python-service/
 WORKDIR /root/python-service/
 
 RUN pip install -r requirements.txt
-
-WORKDIR /root/portal/python-service
 
 EXPOSE 5000
 
