@@ -4,9 +4,6 @@ MAINTAINER Joshua S. Eagle
 
 WORKDIR /root/
 
-# Update NPM
-RUN npm cache clean -f
-
 COPY ./ng-app /root/ng-app
 
 WORKDIR /root/ng-app
