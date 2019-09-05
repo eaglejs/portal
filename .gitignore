@@ -39,8 +39,7 @@ yarn-error.log
 testem.log
 /typings
 *.pyc
-/*-service/sonar/**
-/sonar/**
+**/sonar/**
 
 # System Files
 .DS_Store
