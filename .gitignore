@@ -40,6 +40,8 @@ testem.log
 /typings
 *.pyc
 **/sonar/**
+/python-service/RPi/**
+/python-service/RPi.egg-info/**
 
 # System Files
 .DS_Store
