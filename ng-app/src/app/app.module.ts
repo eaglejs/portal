@@ -11,7 +11,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AppRoutingModule } from './app-routing.module';
-import { MaterialModule } from './material';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
