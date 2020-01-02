@@ -33,4 +33,8 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should get error messages for the login form', () => {
+    component.loginFormControl.get('username');
+   });
 });
