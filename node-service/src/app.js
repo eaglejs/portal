@@ -57,7 +57,7 @@ APP.use(bodyParser.urlencoded({ extended: false }));
 
 // include routes
 routes.forEach(route => {
-  APP.use('/', route);
+  APP.use('/api', route);
 });
 
 // catch 404 and forward to error handler
