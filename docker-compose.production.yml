@@ -32,7 +32,7 @@ services:
     container_name: python-service
 
   mongo:
-    image: mongo:latest
+    image: webhippie/mongodb:latest
     volumes:
       - ./mongodb/db:/data/db/
     ports:
