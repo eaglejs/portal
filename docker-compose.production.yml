@@ -37,8 +37,10 @@ services:
   python-service:
     build:
       context: .
-      dockerfile: Dockerfile.python-service
+      dockerfile: Dockerfile.python-service.prod
     image: portal/python-service:latest
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
     volumes:
       - ./python-service:/root/python-service
     ports:
