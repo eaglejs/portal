@@ -8,7 +8,7 @@ COPY ./python-service/ /root/python-service/
 
 WORKDIR /root/python-service/
 
-RUN pip install -r flask RPi.gpio
+RUN pip install flask RPi.gpio
 
 EXPOSE 5000
 

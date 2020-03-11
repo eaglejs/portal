@@ -8,7 +8,7 @@ COPY ./python-service/ /root/python-service/
 
 WORKDIR /root/python-service/
 
-RUN pip install -r flask
+RUN pip install flask
 
 EXPOSE 5000
 
