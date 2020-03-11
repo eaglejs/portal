@@ -13,7 +13,7 @@ class GarageController:
 
 	def __init__(self):
 		self.RELAY_PIN = 23
-		self.STATE_PIN = 17
+		self.STATE_PIN = 7
 		self.STATE_PIN_CLOSED_VALUE = 0
 
 		GPIO.setup(self.RELAY_PIN, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
