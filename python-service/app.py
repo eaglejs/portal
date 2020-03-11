@@ -9,7 +9,6 @@ app = Flask(__name__)
 
 gc = GarageController()
 
-
 @app.route('/toggle-garage-door', methods=['GET'])
 def get_tasks():
 	gc.toggleGarageDoor()

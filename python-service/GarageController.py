@@ -16,8 +16,8 @@ class GarageController:
 		self.STATE_PIN = 7
 		self.STATE_PIN_CLOSED_VALUE = 0
 
-		GPIO.setup(self.RELAY_PIN, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
-		GPIO.setup(self.STATE_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+		GPIO.setup(self.RELAY_PIN, GPIO.OUT)
+		GPIO.setup(self.STATE_PIN, GPIO.IN)
 		GPIO.output(self.RELAY_PIN, True)
 		sys.stdout.flush()
 
