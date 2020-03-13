@@ -13,7 +13,7 @@ const routes = [
 const port = 8080;
 const originsWhitelist = [
   'http://localhost:4200', //this is my front-end url for development
-  'http://www.myproductionurl.com'
+  'http://app.portal.com'
 ];
 const corsOptions = {
   origin: (origin, callback) => {
