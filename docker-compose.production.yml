@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.node-service
-    command: ["npm", "run", "start-be"]
+    command: ["npm", "run", "start"]
     image: portal/node-service:latest
     volumes:
       - ./node-service/src:/root/node-service/src
