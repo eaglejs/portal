@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.loginFormControl = this.formBuilder.group({
       password: ['', [Validators.required]],
-      username: ['', [Validators.required]]
+      email: ['', [Validators.required]]
     });
   }
 
@@ -28,8 +28,10 @@ export class LoginComponent implements OnInit {
   }
 
   login($event): void {
-    this.authService.login(this.loginFormControl.getRawValue()).subscribe(data => {
-      console.log(data);
-    });
+    if (this.loginFormControl.valid) {
+      this.authService.login(this.loginFormControl.getRawValue()).subscribe(data => {
+        console.log(data);
+      });
+    }
   }
 }

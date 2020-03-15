@@ -2,9 +2,10 @@
   <div class="login-wrapper">
     <div>
       <mat-form-field>
-        <label for="username">Username</label>
-        <input matInput id="username" type="text" name="username" formControlName="username" autocomplete="username"
+        <label for="email">Email</label>
+        <input matInput id="email" type="email" name="email" formControlName="email" autocomplete="email"
           required />
+        <mat-error *ngIf="loginFormControl.controls.email && loginFormControl.controls.email.invalid">This field is required</mat-error>
       </mat-form-field>
     </div>
     <div>
@@ -12,6 +13,8 @@
         <label for="password">Password</label>
         <input matInput id="password" type="password" name="password" formControlName="password"
           autocomplete="current-password" required />
+          <mat-error *ngIf="loginFormControl.controls.password && loginFormControl.controls.password.invalid">This field is required
+          </mat-error>
       </mat-form-field>
     </div>
     <div class="text-right">
