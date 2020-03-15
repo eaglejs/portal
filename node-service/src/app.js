@@ -27,7 +27,7 @@ const APP = express();
 let db = null;
 
 // create mongodb connection
-mongoose.connect('mongodb://mongo:27017/portal', {});
+mongoose.connect('mongodb://mongo:27017/portal', { useNewUrlParser: true});
 
 db = mongoose.connection;
 

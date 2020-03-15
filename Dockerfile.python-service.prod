@@ -10,6 +10,4 @@ WORKDIR /root/python-service/
 
 RUN pip install flask RPi.gpio
 
-EXPOSE 5000
-
 CMD ["python", "app.py"]
