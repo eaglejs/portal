@@ -1,29 +1,31 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const User = require('../models/user');
 
-router.get('/test', (req, res, next) => {
+const jwtKey = 'It is dangerous to go alone!';
+const jwtExpirySeconds = 300 // 5mins
+
+router.get('/ping', (req, res, next) => {
   res.status(200).json({
     success: true
   });
 });
 
 // POST /login
-router.post('/login', (req, res, next) => {
-  if (!!(req.body.username && req.body.password)) {
-    User.authenticate(req.body.username, req.body.password, (error, user) => {
+router.post('/login', function (req, res, next) {
+  if (req.body.email && req.body.password) {
+    User.authenticate(req.body.email, req.body.password, function (error, user) {
       if (error || !user) {
         return res.status(403).json({
           error: error
         });
       } else {
-        req.session.userId = user._id;
-        return res.json({
-          username: user.username,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        });
+        const token = jwt.sign({ user: user.email }, jwtKey, {
+          algorithm: 'HS256',
+          expiresIn: jwtExpirySeconds
+        })
+        return res.json({ user, jwt: token, expiration: jwtExpirySeconds * 1000 });
       }
     });
   } else {
@@ -33,42 +35,37 @@ router.post('/login', (req, res, next) => {
   }
 });
 
-// GET /logout
-router.get('/logout', (req, res, next) => {
-  if (req.session) {
-    // devare session object
-    req.session.destroy(err => {
-      if (err) {
-        return next(err);
-      } else {
-        return res.status(200).json({ loggedIn: false });
-      }
-    });
-  }
-});
+// POST /refresh-token
+router.post('/refresh-token', (req, res, next) => {
+  const token = req.body.jwt;
+  let payload = {
+    exp: 0,
 
-// POST /isLoggedIn
-router.post('/is-logged-in', (req, res, next) => {
-  if (req.session && req.session.userId) {
-    User.findById(req.session.userId).exec( (error, user) => {
-      if (error) {
-        return res.json({
-          message: 'You must be logged in to access the application.'
-        });
-      } else {
-        return res.json({
-          username: user.username,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        });
-      }
-    });
-  } else {
-    return res.send({
-      error: 'You must be logged in to access the application'
-    });
+  };
+  if (!token) {
+    return res.status(401).end();
   }
+
+  try {
+    payload = jwt.verify(token, jwtKey);
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).end();
+    }
+    return res.status(400).end();
+  }
+
+  const nowUnixSeconds = Math.round(Number(new Date()) / 1000)
+  if (payload.exp - nowUnixSeconds > 30) {
+    return res.status(400).end()
+  }
+
+  const newToken = jwt.sign({ username: payload.username }, jwtKey, {
+    algorithm: 'HS256',
+    expiresIn: jwtExpirySeconds
+  })
+  res.json({jwt: newToken, expiration: jwtExpirySeconds * 1000 });
+
 });
 
 module.exports = router;

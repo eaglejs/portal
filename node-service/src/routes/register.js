@@ -1,6 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/user');
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const router = express.Router();
+const User = require('../models/user');
+
+const jwtKey = 'It is dangerous to go alone!';
+const jwtExpirySeconds = 300 // 5mins
 
 // POST /register
 router.post('/register', (req, res, next) => {
@@ -42,8 +46,11 @@ router.post('/register', (req, res, next) => {
                 if (error) {
                     return next(error);
                 } else {
-                    req.session.userId = user._id;
-                    return res.json(req.session);
+                    const token = jwt.sign({ user: user.email }, jwtKey, {
+                        algorithm: 'HS256',
+                        expiresIn: jwtExpirySeconds
+                    } )
+                    return res.json({ user, jwt: token, expiration: jwtExpirySeconds * 1000});
                 }
             });
 

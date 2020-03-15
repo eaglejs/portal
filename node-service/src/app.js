@@ -1,14 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 const routes = [
   require('./routes/login'),
   require('./routes/register'),
-  require('./routes/toggle-garage-door'),
-  require('./routes/user-info')
+  require('./routes/toggle-garage-door')
 ];
 const port = 8080;
 const originsWhitelist = [
@@ -34,27 +31,17 @@ db = mongoose.connection;
 //add cors whitelist
 APP.use(cors(corsOptions));
 
-// user sessions for tracking logins
-APP.use(
-  session({
-    secret: "It's dangerous to go alone!",
-    resave: true,
-    saveUninitialized: false,
-    store: new MongoStore({
-      mongooseConnection: db
-    })
-  })
-);
-
-// make user ID available in templates
-APP.use((req, res, next) => {
-  res.locals.currentUser = req.session.userId;
-  next();
-});
-
 // parse incoming requests
 APP.use(bodyParser.json());
 APP.use(bodyParser.urlencoded({ extended: false }));
+
+// 4. Force https in production
+if (APP.get('env') === 'production') {
+  APP.use(function (req, res, next) {
+    var protocol = req.get('x-forwarded-proto');
+    protocol == 'https' ? next() : res.redirect('https://' + req.hostname + req.url);
+  });
+}
 
 // include routes
 routes.forEach(route => {
