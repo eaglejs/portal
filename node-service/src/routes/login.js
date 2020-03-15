@@ -16,6 +16,11 @@ router.get('/ping', (req, res, next) => {
 router.post('/login', function (req, res, next) {
   if (req.body.email && req.body.password) {
     User.authenticate(req.body.email, req.body.password, function (error, user) {
+      const payload = {
+        email: user.email,
+        name: user.name,
+        role: user.role
+      }
       if (error || !user) {
         return res.status(403).json({
           error: error
@@ -25,7 +30,7 @@ router.post('/login', function (req, res, next) {
           algorithm: 'HS256',
           expiresIn: jwtExpirySeconds
         })
-        return res.json({ user, jwt: token, expiration: jwtExpirySeconds * 1000 });
+        return res.json({ user: payload, jwt: token, expiration: jwtExpirySeconds * 1000 });
       }
     });
   } else {

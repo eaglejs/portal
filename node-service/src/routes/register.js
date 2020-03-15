@@ -43,6 +43,11 @@ router.post('/register', (req, res, next) => {
 
             // user schema's `create` method to insert document into Mongo
             User.create(userData, (error, user) => {
+                const payload = {
+                    email: user.email,
+                    name: user.name,
+                    role: user.role
+                }
                 if (error) {
                     return next(error);
                 } else {
@@ -50,7 +55,7 @@ router.post('/register', (req, res, next) => {
                         algorithm: 'HS256',
                         expiresIn: jwtExpirySeconds
                     } )
-                    return res.json({ user, jwt: token, expiration: jwtExpirySeconds * 1000});
+                    return res.json({ user: payload, jwt: token, expiration: jwtExpirySeconds * 1000});
                 }
             });
 
