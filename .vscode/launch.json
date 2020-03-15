@@ -5,18 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Remote Attach",
-      "type": "python",
-      "request": "attach",
-      "port": 5000,
-      "pathMappings": [
-        {
-          "localRoot": "${workspaceFolder}/python-service",
-          "remoteRoot": "/root/python-service"
-        }
-      ]
-    },
-    {
       "localRoot": "${workspaceFolder}/node-service/src/",
       "name": "Docker: Attach to Node",
       "port": 9229,

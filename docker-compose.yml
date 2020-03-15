@@ -33,11 +33,13 @@ services:
   python-service:
     build:
       context: .
-      dockerfile: Dockerfile.python-service
+      dockerfile: Dockerfile.python-service.prod
     command: python app.py
     image: portal/python-service:latest
     volumes:
       - ./python-service:/root/python-service
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
     ports:
       - 5000:5000
     restart: always

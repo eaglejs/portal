@@ -31,10 +31,14 @@ router.post('/register', (req, res, next) => {
             userData.name = req.body.name;
             userData.username = req.body.username;
             userData.password = req.body.password;
-            userData.role = 'admin';
+            if (!data.length) {
+                userData.role = 'admin';
+            } else {
+                userData.role = 'user';
+            }
 
             // user schema's `create` method to insert document into Mongo
-            User.create(userData, function (error, user) {
+            User.create(userData, (error, user) => {
                 if (error) {
                     return next(error);
                 } else {
