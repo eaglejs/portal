@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
-var UserSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
@@ -22,16 +22,17 @@ var UserSchema = new mongoose.Schema({
         required: true
     },
     role: {
-        type: String
+        type: String,
+        required: true
     }
 });
 
 mongoose.Promise = global.Promise;
 
 // authenticate input against database documents
-UserSchema.statics.authenticate = function(username, password, callback) {
+UserSchema.statics.authenticate = (username, password, callback) => {
     User.findOne({username: username})
-        .exec(function (error, user) {
+        .exec( (error, user) => {
             if (error) {
                 return callback(error);
             } else if ( !user ) {
@@ -39,7 +40,7 @@ UserSchema.statics.authenticate = function(username, password, callback) {
                 err.status = 401;
                 return callback(err);
             }
-            bcrypt.compare(password, user.password, function(error, result) {
+            bcrypt.compare(password, user.password, (error, result) => {
                 if (result) {
                     return callback(null, user);
                 } else {
@@ -50,16 +51,14 @@ UserSchema.statics.authenticate = function(username, password, callback) {
 }
 
 // hash password before saving to database
-UserSchema.pre('save', function(next) {
-    var user = this;
-
-    bcrypt.hash(user.password, 10, function(err, hash) {
+UserSchema.pre('save', next => {
+    bcrypt.hash(user.password, 10, (err, hash) => {
         if (err) {
             return next(err);
         }
-        user.password = hash;
+        this.password = hash;
         next();
     });
 });
-var User = mongoose.model('User', UserSchema);
-module.exports = User;
+
+module.exports = mongoose.model('User', UserSchema);

@@ -1,5 +1,6 @@
-var mongoose = require('mongoose');
-var GarageDoors = new mongoose.Schema({
+const mongoose = require('mongoose');
+const collectionName = 'garageDoors';
+const GarageDoors = new mongoose.Schema({
     garageDoors: {
         type: Array,
         door: {
@@ -18,8 +19,6 @@ mongoose.Promise = global.Promise;
 
 GarageDoors.set('collection', 'garageDoors');
 
-var collectionName = 'garageDoors';
-
-var M = mongoose.model('GarageDoors', GarageDoors, collectionName);
+mongoose.model('GarageDoors', GarageDoors, collectionName);
 
 module.exports = GarageDoors;
