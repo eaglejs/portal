@@ -10,10 +10,14 @@ app = Flask(__name__)
 gc = GarageController()
 
 @app.route('/toggle-garage-door', methods=['GET'])
-def get_tasks():
+def toggleGarageDoor():
 	gc.toggleGarageDoor()
 	return jsonify({'door-status': gc.getGarageState()})
 
+
+@app.route('/garage-door-status', methods=['GET'])
+def getGarageState():
+	return jsonify({'door-status': gc.getGarageState()})
 
 if __name__ == '__main__':
 	app.run(host=IPCONFIG, debug=True)
