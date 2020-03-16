@@ -1,10 +1,7 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const router = express.Router();
+const jwtHandler = require('../middleware/jwt-handler');
 const User = require('../models/user');
-
-const jwtKey = 'It is dangerous to go alone!';
-const jwtExpirySeconds = 300 // 5mins
 
 // POST /register
 router.post('/register', (req, res, next) => {
@@ -43,19 +40,10 @@ router.post('/register', (req, res, next) => {
 
             // user schema's `create` method to insert document into Mongo
             User.create(userData, (error, user) => {
-                const payload = {
-                    email: user.email,
-                    name: user.name,
-                    role: user.role
-                }
                 if (error) {
                     return next(error);
                 } else {
-                    const token = jwt.sign({ user: user.email }, jwtKey, {
-                        algorithm: 'HS256',
-                        expiresIn: jwtExpirySeconds
-                    } )
-                    return res.json({ user: payload, jwt: token, expiration: jwtExpirySeconds * 1000});
+                    return jwtHandler.createToken(req, res, next, user);
                 }
             });
 
@@ -66,15 +54,6 @@ router.post('/register', (req, res, next) => {
         }
 
     });
-});
-
-// POST /is-registered
-router.post('/is-registered', (req, res, next) => {
-    // TO-DO: Check if there are users in the collection.
-    User.find().exec(function (error, data) {
-        data.length ? res.json({ isRegistered: true }) : res.json({ isRegistered: false });
-    });
-
 });
 
 module.exports = router;

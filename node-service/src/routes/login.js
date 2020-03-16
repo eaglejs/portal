@@ -1,10 +1,7 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
+const jwtHandler = require('../middleware/jwt-handler');
 const router = express.Router();
 const User = require('../models/user');
-
-const jwtKey = 'It is dangerous to go alone!';
-const jwtExpirySeconds = 300 // 5mins
 
 router.get('/ping', (req, res, next) => {
   res.status(200).json({
@@ -21,16 +18,13 @@ router.post('/login', function (req, res, next) {
         name: user.name,
         role: user.role
       }
+
       if (error || !user) {
         return res.status(403).json({
           error: error
         });
       } else {
-        const token = jwt.sign({ user: user.email }, jwtKey, {
-          algorithm: 'HS256',
-          expiresIn: jwtExpirySeconds
-        })
-        return res.json({ user: payload, jwt: token, expiration: jwtExpirySeconds * 1000 });
+        return jwtHandler.createToken(req, res, next, payload);
       }
     });
   } else {
