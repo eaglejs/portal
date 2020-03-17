@@ -13,9 +13,7 @@ body {
 }
 
 .mat-sidenav-container {
-  height: 100%;
-  display: flex;
-  flex: 1 1 auto;
+  height: calc(100% - 64px);
 }
 
 .mat-nav-list .mat-list-item {
@@ -153,11 +151,6 @@ body .push-right {
 
 .example-card {
   max-width: 400px;
-}
-
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
 }
 
 .title-group {

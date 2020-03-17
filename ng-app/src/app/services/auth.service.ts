@@ -12,21 +12,26 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private authPacket$: BehaviorSubject<AuthPacket> = new BehaviorSubject(null);
-  constructor(private http: HttpClient, private router: Router) {}
+
+  constructor(private http: HttpClient, private router: Router) {
+    const authPacket = JSON.parse(localStorage.getItem('authPacket'));
+    if (authPacket) {
+      this.refreshToken().subscribe();
+    }
+  }
 
   isLoggedIn() {
     return moment().isBefore(this.getExpiration());
   }
 
   private setSession(authPacket: AuthPacket) {
-    localStorage.setItem('jwt', authPacket.jwt);
-    localStorage.setItem("expiration", JSON.stringify(authPacket.expiration));
+    localStorage.setItem('authPacket', JSON.stringify(authPacket));
   }
 
   getExpiration() {
-    const expiration = localStorage.getItem("expiration");
-    const expiresAt = JSON.parse(expiration);
-    return moment(expiresAt);
+    const authPacket = JSON.parse(localStorage.getItem('authPacket'));
+    const expiresAt = JSON.parse(authPacket.expiration);
+    return moment.unix(expiresAt).utc();
   }
 
   getAuthPacket(): AuthPacket {
@@ -35,8 +40,7 @@ export class AuthService {
 
   logout(): void {
     this.authPacket$.next(null);
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('expiration');
+    localStorage.removeItem('authPacket');
     this.router.navigate(['/login']);
   }
 
@@ -51,14 +55,36 @@ export class AuthService {
     );
   }
 
-  register(pkg): Observable<any> {
-    return this.http.post<any>('/api/register', pkg).pipe(
+  register(pkg): Observable<AuthPacket> {
+    return this.http.post<AuthPacket>('/api/register', pkg).pipe(
       map(authPacket => {
         this.authPacket$.next(authPacket);
         this.setSession(authPacket);
         return authPacket;
       }),
       shareReplay()
+    );
+  }
+
+  isAdmin(): boolean {
+    const authPacket: AuthPacket = this.authPacket$.getValue();
+    if (authPacket && authPacket.user.role === 'admin') {
+      return true
+    }
+    return false;
+  }
+
+  usersRegistered(): Observable<any> {
+    return this.http.get<any>('/api/has-users');
+  }
+
+  refreshToken(): Observable<AuthPacket> {
+    const payload = JSON.parse(localStorage.getItem('authPacket'));
+    return this.http.post<AuthPacket>('/api/refresh-token', payload).pipe(
+      map(authPacket => {
+        this.authPacket$.next(authPacket);
+        return authPacket;
+      })
     );
   }
 }

@@ -1,6 +1,4 @@
-import { AuthPacket } from './auth-packet';
-
-export interface User extends AuthPacket {
+export interface User {
   name: string;
   email: string;
   role: string;

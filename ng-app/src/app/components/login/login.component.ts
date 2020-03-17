@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
   loginFormControl: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.loginFormControl = this.formBuilder.group({
@@ -27,10 +28,10 @@ export class LoginComponent implements OnInit {
       : '';
   }
 
-  login($event): void {
+  login(): void {
     if (this.loginFormControl.valid) {
       this.authService.login(this.loginFormControl.getRawValue()).subscribe(data => {
-        console.log(data);
+        this.router.navigate(['/dashboard']);
       });
     }
   }

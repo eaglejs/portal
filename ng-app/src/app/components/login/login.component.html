@@ -1,4 +1,8 @@
-<form (submit)="login($event)" [formGroup]="loginFormControl">
+<section class="mat-typography title-group">
+  <h1>Login</h1>
+  <mat-divider></mat-divider>
+</section>
+<form (submit)="login()" [formGroup]="loginFormControl">
   <div class="login-wrapper">
     <div>
       <mat-form-field>
