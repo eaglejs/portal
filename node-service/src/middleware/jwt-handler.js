@@ -17,19 +17,19 @@ const createToken = (req, res, next, user) => {
 }
 
 const verifyToken = (req, res, next, token) => {
-  let payload;
-
+  isVerified = false;
   try {
-    payload = jwt.verify(token.split(' ')[1], jwtKey)
+    isVerified = jwt.verify(token, jwtKey);
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       // if the error thrown is because the JWT is unauthorized, return a 401 error
-      return res.status(401).end()
+      res.status(401).end();
+      return isVerified;
     }
     // otherwise, return a bad request error
-    return res.status(400).end()
+    res.status(400).end()
+    return isVerified;
   }
-  return next();
 }
 
 module.exports.createToken = createToken;

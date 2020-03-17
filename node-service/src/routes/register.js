@@ -10,13 +10,11 @@ router.post('/register', (req, res, next) => {
         var userData = {
             email: '',
             name: '',
-            username: '',
             password: '',
             role: ''
         };
         if (req.body.email &&
             req.body.name &&
-            req.body.username &&
             req.body.password &&
             req.body.confirmPassword) {
 
@@ -30,7 +28,6 @@ router.post('/register', (req, res, next) => {
             // create object with form input
             userData.email = req.body.email;
             userData.name = req.body.name;
-            userData.username = req.body.username;
             userData.password = req.body.password;
             if (!data.length) {
                 userData.role = 'admin';
@@ -53,6 +50,17 @@ router.post('/register', (req, res, next) => {
             return next(err);
         }
 
+    });
+});
+
+router.get('/has-users', (req, res, next) => {
+    User.find({}, (err, users) => {
+        if (!users.length) {
+            res.send(false);
+            return;
+        }
+        res.send(true);
+        return next();
     });
 });
 

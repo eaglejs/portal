@@ -37,30 +37,21 @@ router.post('/login', function (req, res, next) {
 // POST /refresh-token
 router.post('/refresh-token', (req, res, next) => {
   const token = req.body.jwt;
-  let payload;
+  const payload = {
+    email: req.body.email,
+    name: req.body.name,
+    role: req.body.role
+  }
+
   if (!token) {
     return res.status(401).end();
   }
 
-  try {
-    payload = jwt.verify(token, jwtKey);
-  } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError) {
-      return res.status(401).end();
-    }
-    return res.status(400).end();
+  if (!jwtHandler.verifyToken(req, res, next, token)) {
+    return res.status(401).end();
   }
 
-  const nowUnixSeconds = Math.round(Number(new Date()) / 1000)
-  if (payload.exp - nowUnixSeconds > 30) {
-    return res.status(400).end()
-  }
-
-  const newToken = jwt.sign({ username: payload.username }, jwtKey, {
-    algorithm: 'HS256',
-    expiresIn: jwtExpirySeconds
-  })
-  res.json({ jwt: newToken, expiration: jwtExpirySeconds * 1000 });
+  return jwtHandler.createToken(req, res, next, payload);
 
 });
 
