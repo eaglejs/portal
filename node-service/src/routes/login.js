@@ -13,17 +13,17 @@ router.get('/ping', (req, res, next) => {
 router.post('/login', function (req, res, next) {
   if (req.body.email && req.body.password) {
     User.authenticate(req.body.email, req.body.password, function (error, user) {
-      const payload = {
-        email: user.email,
-        name: user.name,
-        role: user.role
-      }
-
       if (error || !user) {
-        return res.status(403).json({
+        return res.status(401).json({
           error: error
         });
       } else {
+        const payload = {
+          email: user.email,
+          name: user.name,
+          role: user.role
+        }
+
         return jwtHandler.createToken(req, res, next, payload);
       }
     });
@@ -60,7 +60,7 @@ router.post('/refresh-token', (req, res, next) => {
     algorithm: 'HS256',
     expiresIn: jwtExpirySeconds
   })
-  res.json({jwt: newToken, expiration: jwtExpirySeconds * 1000 });
+  res.json({ jwt: newToken, expiration: jwtExpirySeconds * 1000 });
 
 });
 
