@@ -1,54 +1,64 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { User } from '../models/user';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
+
+import { AuthPacket } from '../models/auth-packet';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  session;
-  constructor(private http: HttpClient) {}
+  private authPacket$: BehaviorSubject<AuthPacket> = new BehaviorSubject(null);
+  constructor(private http: HttpClient, private router: Router) {}
 
-  isAuthenticated(): boolean {
-    return true;
-  }
-
-  login(pkg): Observable<User>{
-    return this.http.post<User>('/api/login', pkg).pipe(map(res => this.session), shareReplay());
-  }
-
-  private setSession(authResult) {
-    const expiresAt = moment().add(authResult.expiresIn, 'second');
-
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
-  }
-
-  logout(): Observable<any>{
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("expires_at");
-    return this.http.get<any>('/api/logout');
-  }
-
-  public isLoggedIn() {
+  isLoggedIn() {
     return moment().isBefore(this.getExpiration());
   }
 
-  isLoggedOut() {
-    return !this.isLoggedIn();
+  private setSession(authPacket: AuthPacket) {
+    localStorage.setItem('jwt', authPacket.jwt);
+    localStorage.setItem("expiration", JSON.stringify(authPacket.expiration));
   }
 
   getExpiration() {
-    const expiration = localStorage.getItem("expires_at");
+    const expiration = localStorage.getItem("expiration");
     const expiresAt = JSON.parse(expiration);
     return moment(expiresAt);
   }
 
+  getAuthPacket(): AuthPacket {
+    return this.authPacket$.value;
+  }
+
+  logout(): void {
+    this.authPacket$.next(null);
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('expiration');
+    this.router.navigate(['/login']);
+  }
+
+  login(pkg): Observable<AuthPacket> {
+    return this.http.post<AuthPacket>('/api/login', pkg).pipe(
+      map(authPacket => {
+        this.authPacket$.next(authPacket);
+        this.setSession(authPacket);
+        return authPacket;
+      }),
+      shareReplay()
+    );
+  }
+
   register(pkg): Observable<any> {
-    return this.http.post<any>('/api/register', pkg);
+    return this.http.post<any>('/api/register', pkg).pipe(
+      map(authPacket => {
+        this.authPacket$.next(authPacket);
+        this.setSession(authPacket);
+        return authPacket;
+      }),
+      shareReplay()
+    );
   }
 }
