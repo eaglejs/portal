@@ -38,13 +38,13 @@ router.post('/login', function (req, res, next) {
 router.post('/refresh-token', (req, res, next) => {
   const token = req.body.jwt;
   const payload = {
-    email: req.body.email,
-    name: req.body.name,
-    role: req.body.role
+    email: req.body.user.email,
+    name: req.body.user.name,
+    role: req.body.user.role
   }
 
-  if (!token) {
-    return res.status(401).end();
+  if (!token || !payload.email && !payload.name && !payload.role) {
+    return res.status(400).end();
   }
 
   if (!jwtHandler.verifyToken(req, res, next, token)) {
