@@ -37,10 +37,7 @@ router.post('/login', function (req, res, next) {
 // POST /refresh-token
 router.post('/refresh-token', (req, res, next) => {
   const token = req.body.jwt;
-  let payload = {
-    exp: 0,
-
-  };
+  let payload;
   if (!token) {
     return res.status(401).end();
   }
