@@ -12,6 +12,18 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
 </head>
 <body class="mat-typography">
-  <app-root></app-root>
+  <app-root>
+    <style>
+      .spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 150px;
+        height: 150px;
+      }
+    </style>
+    <img src="/assets/spinner.svg" class="spinner" alt="Loading...">
+  </app-root>
 </body>
 </html>

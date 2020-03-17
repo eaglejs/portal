@@ -21,6 +21,10 @@ export class AuthService {
   }
 
   isLoggedIn() {
+    const authPacket = JSON.parse(localStorage.getItem('authPacket'));
+    if (!authPacket) {
+      return false;
+    }
     return moment().isBefore(this.getExpiration());
   }
 
@@ -83,6 +87,7 @@ export class AuthService {
     return this.http.post<AuthPacket>('/api/refresh-token', payload).pipe(
       map(authPacket => {
         this.authPacket$.next(authPacket);
+        this.setSession(authPacket);
         return authPacket;
       })
     );
