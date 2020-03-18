@@ -24,7 +24,7 @@ services:
     volumes:
       - ./node-service/src:/root/node-service/src
     ports:
-      - 8080:8080
+      - 8080
     restart: always
     depends_on:
       - mongo
