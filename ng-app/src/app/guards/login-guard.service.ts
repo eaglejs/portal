@@ -1,24 +1,27 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-
-import { AuthService } from '../services/auth.service';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegistrationGuardService {
+export class LoginGuardService {
 
   constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(): Observable<boolean> | boolean {
 
     return this.authService.usersRegistered().pipe(map(hasUsers => {
-      if (!hasUsers) {
+      if (this.authService.isLoggedIn()) {
+        this.router.navigate(['/dashboard']);
+        return false;
+      }
+      if (hasUsers) {
         return true;
       }
-      this.router.navigate(['/login']);
+      this.router.navigate(['/register']);
       return false;
     }));
   }

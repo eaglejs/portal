@@ -20,7 +20,7 @@
       <a *ngIf="isLoggedIn()" routerLink="/register" mat-list-item>
         <mat-icon>person_add</mat-icon> Add Users
       </a>
-      <a *ngIf="!isLoggedIn()" mat-list-item>
+      <a *ngIf="!isLoggedIn()" routerLink="/login" mat-list-item>
         <mat-icon>person</mat-icon> Log In
       </a>
       <a *ngIf="isLoggedIn()" mat-list-item (click)="logout()">
