@@ -52,12 +52,3 @@ services:
     restart: always
     container_name: mongo
 
-  # reverseproxy:
-  #   image: nginx:latest
-  #   volumes:
-  #     - ./nginx.reverseproxy.conf:/etc/nginx/nginx.conf:ro
-  #   ports:
-  #     - 8080:8080
-  #     - 5000:5000
-  #   restart: always
-  #   container_name: reverseproxy
