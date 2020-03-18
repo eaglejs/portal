@@ -5,12 +5,14 @@ function requiresLogin(req, res, next) {
 	if (req.headers.authorization) {
 		token = req.headers.authorization.split(' ')[1];
 	}
-
-	if (!token) {
-		return res.status(401).end()
+	const tokenVerified = jwtHandler.verifyToken(req, res, next, token);
+	if (!token || !tokenVerified) {
+		const error = new Error('You must be logged in.');
+		error.status = 401;
+		return next(error);
 	}
 
-	return jwtHandler.verifyToken(req, res, next, token);
+	return next();
 
 }
 
