@@ -6,6 +6,7 @@ import { shareReplay, map } from 'rxjs/operators';
 
 import { AuthPacket } from '../models/auth-packet';
 import { Router } from '@angular/router';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private authPacket$: BehaviorSubject<AuthPacket> = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private configService: ConfigService) {
     const authPacket = JSON.parse(localStorage.getItem('authPacket'));
     if (authPacket) {
       this.refreshToken().subscribe();
@@ -49,7 +50,8 @@ export class AuthService {
   }
 
   login(pkg): Observable<AuthPacket> {
-    return this.http.post<AuthPacket>('/api/login', pkg).pipe(
+    const url = this.configService.buildApiUrl('api', 'login');
+    return this.http.post<AuthPacket>(url, pkg).pipe(
       map(authPacket => {
         this.authPacket$.next(authPacket);
         this.setSession(authPacket);
@@ -60,7 +62,8 @@ export class AuthService {
   }
 
   register(pkg): Observable<AuthPacket> {
-    return this.http.post<AuthPacket>('/api/register', pkg).pipe(
+    const url = this.configService.buildApiUrl('api', 'register');
+    return this.http.post<AuthPacket>(url, pkg).pipe(
       map(authPacket => {
         this.authPacket$.next(authPacket);
         this.setSession(authPacket);
@@ -73,18 +76,20 @@ export class AuthService {
   isAdmin(): boolean {
     const authPacket: AuthPacket = this.authPacket$.getValue();
     if (authPacket && authPacket.user.role === 'admin') {
-      return true
+      return true;
     }
     return false;
   }
 
   usersRegistered(): Observable<any> {
-    return this.http.get<any>('/api/has-users');
+    const url = this.configService.buildApiUrl('api', 'has-users');
+    return this.http.get<any>(url);
   }
 
   refreshToken(): Observable<AuthPacket> {
     const payload = JSON.parse(localStorage.getItem('authPacket'));
-    return this.http.post<AuthPacket>('/api/refresh-token', payload).pipe(
+    const url = this.configService.buildApiUrl('api', 'refresh-token');
+    return this.http.post<AuthPacket>(url, payload).pipe(
       map(authPacket => {
         this.authPacket$.next(authPacket);
         this.setSession(authPacket);
