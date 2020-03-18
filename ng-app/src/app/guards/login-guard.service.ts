@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Router, RouterStateSnapshot, ActivatedRouteSnapshot, CanActivate, UrlTree } from '@angular/router';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuardService {
+export class LoginGuardService implements CanActivate {
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):
+    Observable<boolean | UrlTree > | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     return this.authService.usersRegistered().pipe(map(hasUsers => {
       if (this.authService.isLoggedIn()) {
@@ -23,6 +24,9 @@ export class LoginGuardService {
       }
       this.router.navigate(['/register']);
       return false;
-    }));
+    }), catchError((error: Response) => {
+      // handle the error by throwing statusText into the console
+      return throwError(error.statusText);
+    }), take(1));
   }
 }
