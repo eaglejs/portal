@@ -1,6 +1,6 @@
-import { User } from '../user';
+import { User } from './user';
 
-export class AuthPacket extends User {
+export interface AuthPacket extends User {
   user: User
   jwt: string;
   expirationCountdown: number;
