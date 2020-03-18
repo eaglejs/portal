@@ -9,10 +9,10 @@ const routes = [
 ];
 const port = 8080;
 const originsWhitelist = [
-  'http://localhost:4200', //this is my front-end url for development
-  'http://localhost',
+  'http://192.168.1.191',
   'http://192.168.1.191:4200',
-  'http://app.portal.com'
+  'http://app.portal.com',
+  'http://app.portal.com:4200'
 ];
 const corsOptions = {
   origin: (origin, callback) => {
