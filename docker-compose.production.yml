@@ -12,7 +12,6 @@ services:
     depends_on:
       - python-service
       - node-service
-      - reverseproxy
     container_name: ng-app
 
   node-service:
@@ -24,11 +23,10 @@ services:
     volumes:
       - ./node-service/src:/root/node-service/src
     ports:
-      - 8080
+      - 8080:8080
     restart: always
     depends_on:
       - mongo
-      - reverseproxy
     container_name: node-service
 
   python-service:
@@ -42,8 +40,6 @@ services:
       - ./python-service:/root/python-service
     ports:
       - 5000
-    depends_on:
-      - reverseproxy
     restart: always
     container_name: python-service
 
@@ -53,17 +49,15 @@ services:
       - ./mongodb/db:/data/db/
     ports:
       - 27017
-    depends_on:
-      - reverseproxy
     restart: always
     container_name: mongo
 
-  reverseproxy:
-    image: nginx:latest
-    volumes:
-      - ./nginx.reverseproxy.conf:/etc/nginx/nginx.conf:ro
-    ports:
-      - 8080:8080
-      - 5000:5000
-    restart: always
-    container_name: reverseproxy
+  # reverseproxy:
+  #   image: nginx:latest
+  #   volumes:
+  #     - ./nginx.reverseproxy.conf:/etc/nginx/nginx.conf:ro
+  #   ports:
+  #     - 8080:8080
+  #     - 5000:5000
+  #   restart: always
+  #   container_name: reverseproxy
