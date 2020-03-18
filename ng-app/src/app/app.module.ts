@@ -7,9 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { DashboardComponent, LoginComponent, RegisterComponent } from './components';
+import { httpInterceptorProviders } from './helpers/';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material.module';
 
@@ -31,7 +30,10 @@ import { MaterialModule } from './material.module';
     MaterialModule,
     ReactiveFormsModule
   ],
-  providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: '/' },
+    httpInterceptorProviders,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
