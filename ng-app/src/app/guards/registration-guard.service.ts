@@ -12,7 +12,7 @@ export class RegistrationGuardService {
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  canActivate(): Observable<boolean> | boolean {
+  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
 
     return this.authService.usersRegistered().pipe(map(hasUsers => {
       if (!hasUsers) {
