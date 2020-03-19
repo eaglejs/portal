@@ -11,6 +11,7 @@ services:
       - ./ng-app/src:/root/ng-app/src
     ports:
       - 4200:4200
+      - 80:80
     restart: always
     container_name: ng-app
 
