@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as moment from 'moment';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 
-import { AuthPacket } from '../models/auth-packet';
 import { Router } from '@angular/router';
 import { ConfigService } from './config.service';
+
+import { Keys, User, AuthPacket } from '../models/';
+
+type AuthFunction = () => Promise<AuthPacket>;
+type RetryFunction = (renewalWaitTimeMs: number, authFunc: AuthFunction, retryFn: RetryFunction) => void;
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +21,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router, private configService: ConfigService) {
     const authPacket = JSON.parse(localStorage.getItem('authPacket'));
     if (authPacket) {
-      this.refreshToken().subscribe();
+      this.registerAuthPacket(authPacket);
     }
   }
 
@@ -53,7 +57,7 @@ export class AuthService {
     const url = this.configService.buildApiUrl('api', 'login');
     return this.http.post<AuthPacket>(url, pkg).pipe(
       map(authPacket => {
-        this.authPacket$.next(authPacket);
+        this.registerAuthPacket(authPacket);
         this.setSession(authPacket);
         return authPacket;
       }),
@@ -65,7 +69,7 @@ export class AuthService {
     const url = this.configService.buildApiUrl('api', 'register');
     return this.http.post<AuthPacket>(url, pkg).pipe(
       map(authPacket => {
-        this.authPacket$.next(authPacket);
+        this.registerAuthPacket(authPacket);
         this.setSession(authPacket);
         return authPacket;
       }),
@@ -86,15 +90,122 @@ export class AuthService {
     return this.http.get<any>(url);
   }
 
-  refreshToken(): Observable<AuthPacket> {
+  getParam(key: string, defaultVal?: any) {
+    const val = this.configService.get(key);
+    if (val) {
+      return val;
+    } else {
+      return defaultVal ? defaultVal : null;
+    }
+  }
+
+  authenticate(pkg?): Promise<User> {
+    if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+      return this.renewJWT();
+    }
+    return new Promise<AuthPacket>(resolve => {});
+  }
+
+  registerAuthPacket(authPacket: AuthPacket): void {
+    const renewalWaitTimeMs = this.determineRenewalWaitTimeMs();
+    this.authPacket$.next(authPacket);
+    this.setSession(authPacket);
+
+    if (this.configService.getBool(Keys.JWT_RENEWAL_TIMER_ENABLED)) {
+      this.startRenewalTimer(
+        renewalWaitTimeMs,
+        this.authenticate.bind(this),
+        this.startRenewalTimer.bind(this)
+      );
+    } else {
+      console.warn(
+        `JWT renewal is disabled. JWT will expire in slightly longer than ${renewalWaitTimeMs}ms`
+      );
+    }
+  }
+
+  startRenewalTimer(
+    renewalWaitTimeMs: number,
+    authFn: AuthFunction,
+    renewalFn: RetryFunction
+  ): void {
+    const retryRenew = + this.getParam(
+      Keys.JWT_RENEWAL_RETRY_DELAY_MS_KEY,
+      Keys.JWT_MAX_RENEW_WAIT_TIME_MS_DEFAULT
+    );
+    setTimeout(() => {
+      authFn().then(
+        () => {
+          // this will generate a new renewal timer when the new packet is
+          // registered ... so do nothing
+        },
+        error => {
+          console.error(
+            `Unable to renew credentials will retry in ${retryRenew}ms`,
+            error
+          );
+          // renewal failed, try again after waiting
+          renewalFn(retryRenew, authFn, renewalFn);
+        }
+      );
+    }, renewalWaitTimeMs);
+  }
+
+  determineRenewalWaitTimeMs(): number {
+    // What percentage of the time between iat and exp to wait
+    const buffer = + this.getParam(
+      Keys.JWT_WAIT_BUFFER_MS_KEY,
+      Keys.JWT_WAIT_BUFFER_MS_DEFAULT
+    );
+    // Don't wait any longer than this, no matter what
+    const maxWaitTimeMs = + this.getParam(
+      Keys.JWT_MAX_RENEW_WAIT_TIME_MS_KEY,
+      Keys.JWT_MAX_RENEW_WAIT_TIME_MS_DEFAULT
+    );
+    // Don't wait any less than this, no matter what
+    const minWaitTimeMs = + this.getParam(
+      Keys.JWT_MIN_RENEW_WAIT_TIME_MS_KEY,
+      Keys.JWT_MIN_RENEW_WAIT_TIME_MS_DEFAULT
+    );
+    return Math.max(
+      Math.min(buffer, maxWaitTimeMs),
+      minWaitTimeMs
+    );
+  }
+
+  renewJWT(): Promise<AuthPacket> {
     const payload = JSON.parse(localStorage.getItem('authPacket'));
     const url = this.configService.buildApiUrl('api', 'refresh-token');
-    return this.http.post<AuthPacket>(url, payload).pipe(
-      map(authPacket => {
-        this.authPacket$.next(authPacket);
-        this.setSession(authPacket);
-        return authPacket;
-      })
-    );
+
+    return this.http
+      .post(url, payload)
+      .toPromise()
+      .then(
+        data => this.postAuthenticated(data, true)
+      );
+  }
+
+  postAuthenticated(data: any, renew?: boolean): Promise<AuthPacket> {
+    if (data.jwt) {
+      this.registerAuthPacket(data);
+
+      return new Promise<AuthPacket>(resolve =>
+        setTimeout(() => resolve(), 1000)
+      );
+    } else {
+      throw new Error('Authentication did not return expected results');
+    }
+  }
+
+  handleAuthRedirect(data: HttpErrorResponse): void {
+    const authRedirect = '/login';
+    if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+      if (data.status === 401 || data.status === 403) {
+        this.router.navigate([authRedirect]);
+      } else {
+        this.router.navigate([authRedirect]);
+        throw new Error('Authentication failed');
+      }
+    }
   }
 }
