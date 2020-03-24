@@ -56,9 +56,9 @@ router.post('/register', (req, res, next) => {
 router.get('/has-users', (req, res, next) => {
     User.find({}, (err, users) => {
         if (!users.length) {
-            return res.send(false);
+            return res.send({hasUsers: false});
         }
-        return res.send(true);
+        return res.send({hasUsers: true});
     });
 });
 
