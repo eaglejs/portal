@@ -1,4 +1,3 @@
-<!-- Toolbar -->
 <mat-toolbar color="primary" class="header">
   <div>Material Theme</div>
   <span class="nav-tool-items">
@@ -7,18 +6,17 @@
 </mat-toolbar>
 
 <mat-sidenav-container fxLayout="row">
-  <!-- Sidenav -->
-  <mat-sidenav fxFlex="175px" #sidenav [mode]="isBiggerScreen() ? 'over' : 'side'" [(opened)]="opened"
+  <mat-sidenav fxFlex="225px" #sidenav [mode]="isBiggerScreen() ? 'over' : 'side'" [(opened)]="opened"
     [fixedInViewport]="true" [fixedTopGap]>
     <mat-nav-list>
       <a *ngIf="isLoggedIn()" routerLink="/dashboard" mat-list-item>
         <mat-icon>dashboard</mat-icon> Dashboard
       </a>
-      <a *ngIf="isLoggedIn()" mat-list-item>
+      <a *ngIf="isLoggedIn()" routerLink="/user-profile" mat-list-item>
         <mat-icon>person</mat-icon> User Profile
       </a>
-      <a *ngIf="isLoggedIn()" routerLink="/register" mat-list-item>
-        <mat-icon>person_add</mat-icon> Add Users
+      <a *ngIf="isLoggedIn()" routerLink="/user-management" mat-list-item>
+        <mat-icon>group_add</mat-icon> User Management
       </a>
       <a *ngIf="!isLoggedIn()" routerLink="/login" mat-list-item>
         <mat-icon>person</mat-icon> Log In
@@ -28,9 +26,7 @@
       </a>
     </mat-nav-list>
   </mat-sidenav>
-
-  <!-- Main content -->
-  <mat-sidenav-content fxFlex="calc(100% - 175px)">
+  <mat-sidenav-content fxFlex="calc(100% - 225px)">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
