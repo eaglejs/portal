@@ -14,16 +14,21 @@ export class RegistrationGuardService implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
-    return this.authService.usersRegistered().pipe(map(hasUsers => {
-      if (!hasUsers) {
-        return true;
+      const result = this.authService.getHasUsers();
+      if (result && result.hasUsers) {
+        this.router.navigate(['/login']);
+        return false;
+      } else {
+        return this.authService.usersRegistered().pipe(map(hasUsers => {
+          if (!hasUsers) {
+            return true;
+          }
+          this.router.navigate(['/login']);
+          return false;
+        }), catchError((err: Response) => {
+          // handle the error by throwing statusText into the console
+          return throwError(err.statusText);
+        }), take(1));
       }
-      this.router.navigate(['/login']);
-      return false;
-    }), catchError((err: Response) => {
-      // handle the error by throwing statusText into the console
-      return throwError(err.statusText);
-    }), take(1));
   }
 }

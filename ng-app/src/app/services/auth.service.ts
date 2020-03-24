@@ -7,7 +7,7 @@ import { shareReplay, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ConfigService } from './config.service';
 
-import { Keys, User, AuthPacket } from '../models/';
+import { Keys, User, AuthPacket, HasUsers } from '../models/';
 
 type AuthFunction = () => Promise<AuthPacket>;
 type RetryFunction = (renewalWaitTimeMs: number, authFunc: AuthFunction, retryFn: RetryFunction) => void;
@@ -17,6 +17,7 @@ type RetryFunction = (renewalWaitTimeMs: number, authFunc: AuthFunction, retryFn
 })
 export class AuthService {
   private authPacket$: BehaviorSubject<AuthPacket> = new BehaviorSubject(null);
+  private hasUsers: HasUsers;
 
   constructor(private http: HttpClient, private router: Router, private configService: ConfigService) {
     const authPacket = JSON.parse(localStorage.getItem('authPacket'));
@@ -50,6 +51,7 @@ export class AuthService {
   logout(): void {
     this.authPacket$.next(null);
     localStorage.removeItem('authPacket');
+    this.hasUsers = null;
     this.router.navigate(['/login']);
   }
 
@@ -85,9 +87,16 @@ export class AuthService {
     return false;
   }
 
-  usersRegistered(): Observable<any> {
+  usersRegistered(): Observable<boolean> {
     const url = this.configService.buildApiUrl('api', 'has-users');
-    return this.http.get<any>(url);
+    return this.http.get<HasUsers>(url).pipe(map((results: HasUsers) => {
+      this.hasUsers = results;
+      return results.hasUsers;
+    }));
+  }
+
+  getHasUsers(): HasUsers {
+    return this.hasUsers;
   }
 
   getParam(key: string, defaultVal?: any) {
