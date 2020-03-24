@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { DashboardComponent, LoginComponent, RegisterComponent } from './components';
+import { DashboardComponent, LoginComponent, RegisterComponent, UserManagementComponent, UserProfileComponent } from './components';
 
 import { httpInterceptorProviders } from './helpers/';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +22,8 @@ import { ConfigService } from './services/config.service';
     DashboardComponent,
     LoginComponent,
     RegisterComponent,
+    UserManagementComponent,
+    UserProfileComponent,
   ],
   exports: [],
   imports: [
