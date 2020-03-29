@@ -12,4 +12,6 @@ RUN npm install -g @angular/cli
 
 RUN npm install --silent
 
+RUN npm run build
+
 CMD ["npm", "run", "docker-start"]
