@@ -14,9 +14,7 @@ export class DashboardComponent implements OnInit {
   }
 
   toggleGarageDoor(): void {
-    this.httpService.toggleGarageDoor().subscribe(data => {
-      console.log(data);
-    });
+    this.httpService.toggleGarageDoor().subscribe( () => {});
   }
 
 }
