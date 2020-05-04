@@ -15,6 +15,8 @@ import { MaterialModule } from './material.module';
 
 import { AuthService } from './services/auth.service';
 import { ConfigService } from './services/config.service';
+import { HeaderComponent } from './components/header/header.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { ConfigService } from './services/config.service';
     RegisterComponent,
     UserManagementComponent,
     UserProfileComponent,
+    HeaderComponent,
+    NavigationComponent,
   ],
   exports: [],
   imports: [

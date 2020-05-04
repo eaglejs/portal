@@ -1,32 +1,3 @@
-<mat-toolbar color="primary" class="header">
-  <div>Material Theme</div>
-  <span class="nav-tool-items">
-    <mat-icon (click)="sidenav.toggle()" class="hamburger">menu</mat-icon>
-  </span>
-</mat-toolbar>
-
-<mat-sidenav-container fxLayout="row">
-  <mat-sidenav fxFlex="225px" #sidenav [mode]="isBiggerScreen() ? 'over' : 'side'" [(opened)]="opened"
-    [fixedInViewport]="true" [fixedTopGap]>
-    <mat-nav-list>
-      <a *ngIf="isLoggedIn()" routerLink="/dashboard" mat-list-item>
-        <mat-icon>dashboard</mat-icon> Dashboard
-      </a>
-      <a *ngIf="isLoggedIn()" routerLink="/user-profile" mat-list-item>
-        <mat-icon>person</mat-icon> User Profile
-      </a>
-      <a *ngIf="isLoggedIn()" routerLink="/user-management" mat-list-item>
-        <mat-icon>group_add</mat-icon> User Management
-      </a>
-      <a *ngIf="!isLoggedIn()" routerLink="/login" mat-list-item>
-        <mat-icon>person</mat-icon> Log In
-      </a>
-      <a *ngIf="isLoggedIn()" mat-list-item (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon> Log Out
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content fxFlex="calc(100% - 225px)">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<app-header></app-header>
+<router-outlet></router-outlet>
+<app-navigation></app-navigation>
