@@ -1,0 +1,32 @@
+nav{
+  ul {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+
+    a {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      text-decoration: none;
+      width: 100%;
+
+      mat-icon {
+        display: block;
+        font-size: 2rem;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+
