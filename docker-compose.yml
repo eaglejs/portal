@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.7'
 
 services:
   web:
@@ -14,7 +14,6 @@ services:
       - 80:80
     restart: always
     container_name: ng-app
-
   node-service:
     build:
       context: .
@@ -30,7 +29,6 @@ services:
     depends_on:
       - mongo
     container_name: node-service
-
   python-service:
     build:
       context: .
@@ -45,16 +43,16 @@ services:
       - 5000:5000
     restart: always
     container_name: python-service
-
   mongo:
     image: webhippie/mongodb:latest
     volumes:
-      - ./mongodb/db:/data/db/
+      - mongodb:/var/lib/mongodb
     ports:
       - 27017:27017
     restart: always
     container_name: mongo
-
+volumes:
+  mongodb:
   # sonarqube:
   #   build:
   #     context: .
