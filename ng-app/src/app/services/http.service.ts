@@ -14,4 +14,9 @@ export class HttpService {
     const url = this.configService.buildApiUrl('api', 'toggle-garage-door');
     return this.http.post<any>(url, null);
   }
+
+  getGarageDoorStatus(): Observable<any> {
+    const url = this.configService.buildApiUrl('api', 'garage-door-status');
+    return this.http.get<any>(url);
+  }
 }

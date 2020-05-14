@@ -17,12 +17,12 @@ gc = GarageController()
 @app.route("/toggle-garage-door", methods=["GET"])
 def toggleGarageDoor():
     gc.toggleGarageDoor()
-    return jsonify({"door-status": gc.getGarageState()})
+    return jsonify({"doorStatus": gc.getGarageState()})
 
 
 @app.route("/garage-door-status", methods=["GET"])
 def getGarageState():
-    return jsonify({"door-status": gc.getGarageState()})
+    return jsonify({"doorStatus": gc.getGarageState()})
 
 
 if __name__ == "__main__":
