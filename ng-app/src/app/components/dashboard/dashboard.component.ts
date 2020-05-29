@@ -1,34 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { DoorStatus } from '../../models/door-status';
 
-import { interval } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   toggle = false;
   canvasEl = document.createElement('canvas');
   ctx = this.canvasEl.getContext('2d');
   particles = [];
   ratio = window.innerHeight < 400 ? 0.6 : 1;
   counter = 0;
-  radiusOfCircle = 60;
+  radiusOfCircle = 120;
   r = 0;
+  frameRate = interval(1000 / 120);
+  currentPortalInstance: Subscription;
+  portalStatus: Subscription;
 
   constructor(private httpService: HttpService) { }
 
   ngOnInit() {
     this.createElement();
-    setInterval(this.loop.bind(this, true), 1000 / 120);
+    this.currentPortalInstance = this.frameRate.subscribe(this.loop.bind(this, true));
     this.getGarageDoorStatus();
     const checkRate = interval(1000 * 3);
-    checkRate.subscribe(this.getGarageDoorStatus.bind(this));
+    this.portalStatus = checkRate.subscribe(this.getGarageDoorStatus.bind(this));
+    window.addEventListener('resize', this.createElement.bind(this), true);
+  }
 
-    // window.addEventListener('resize', this.createElement.bind(this), true);
+  ngOnDestroy() {
+    this.currentPortalInstance.unsubscribe();
+    this.currentPortalInstance = null;
+    this.portalStatus.unsubscribe();
+    this.portalStatus = null;
+    this.frameRate = null;
   }
 
   toggleGarageDoor(): void {
@@ -37,16 +47,18 @@ export class DashboardComponent implements OnInit {
         return;
       }
       this.toggle = data.doorStatus;
-      if (this.toggle) {
-        document.querySelector('.portal-wrapper').innerHTML = '';
-        this.counter = 0;
-        this.particles = [];
-        this.createElement();
-        this.loop();
-      } else {
-        this.loop();
-      }
+      this.togglePortal();
     });
+  }
+
+  togglePortal(): void {
+    if (!this.toggle) {
+      document.querySelector('.portal-wrapper').innerHTML = '';
+      this.counter = 0;
+      this.particles = [];
+      this.createElement();
+    }
+    this.loop();
   }
 
   getGarageDoorStatus(): void {
@@ -55,21 +67,13 @@ export class DashboardComponent implements OnInit {
         return;
       }
       this.toggle = data.doorStatus;
-      if (this.toggle) {
-        document.querySelector('.portal-wrapper').innerHTML = '';
-        this.counter = 0;
-        this.particles = [];
-        this.createElement();
-        this.loop();
-      } else {
-        this.loop();
-      }
+      this.togglePortal();
     });
   }
 
   createElement() {
     const scale = this.ratio;
-    this.canvasEl.width = window.innerWidth - 100;
+    this.canvasEl.width = window.innerWidth - 32;
     this.canvasEl.height = window.innerHeight - 200;
     this.ctx.transform(
       scale,
@@ -132,12 +136,12 @@ export class DashboardComponent implements OnInit {
       this.canvasEl.width * 2,
       this.canvasEl.height * 2
     );
-    if (this.counter < this.particles.length && this.toggle) {
+    if (this.counter < this.particles.length && !this.toggle) {
       this.counter++;
       if (this.r < this.radiusOfCircle) {
         this.r++;
       }
-    } else if (this.counter > 1 && !this.toggle) {
+    } else if (this.counter > 1 && this.toggle) {
       // this.counter--;
       if (this.r > 1) {
         this.r--;
