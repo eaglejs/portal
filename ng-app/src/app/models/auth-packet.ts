@@ -1,8 +1,8 @@
 import { User } from './user';
 
 export interface AuthPacket extends User {
-  user: User
+  user: User;
   jwt: string;
   expirationCountdown: number;
-  expiration: number
+  expiration: number;
 }

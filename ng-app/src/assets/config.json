@@ -1,3 +1,7 @@
 {
+  "apiUrl": "api/",
+  "auth": "auth/",
+  "refreshInterval": "60000",
+  "refreshBatchQueryInterval": "30000",
   "server": "http://192.168.1.191:8080/api"
 }

@@ -4,6 +4,9 @@ import { Params } from '@angular/router';
 
 import { Config } from '../models/config';
 import { Keys } from '../models/keys';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ajax } from 'rxjs/ajax';
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +39,8 @@ export class ConfigService {
     this.defaultConfig[Keys.PING_DEPENDENCIES_FREQUENCY_MS_KEY] = Keys.PING_DEPENDENCIES_FREQUENCY_MS_DEFAULT;
   }
 
-  loadConfigData(): Promise<any> {
-    const PROMISE = this.http.get<Config>('/assets/config.json').toPromise();
-    PROMISE.then(data => this.environmentConfig = data || new Config());
-    return PROMISE;
+  loadConfigData(): Observable<any> {
+    return ajax('/assets/config.json').pipe(map(data => this.environmentConfig = data || new Config()));
   }
 
   /**
