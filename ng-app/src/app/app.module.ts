@@ -47,7 +47,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     {
       provide: APP_INITIALIZER,
       useFactory: (configService: ConfigService) => () =>
-        configService.loadConfigData(),
+        configService.loadConfigData().toPromise(),
       deps: [ConfigService],
       multi: true
     },
