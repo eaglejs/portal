@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   counter = 0;
   radiusOfCircle = 120;
   r = 0;
-  frameRate = interval(1000 / 120);
+  frameRate = interval(1000 / 80);
   currentPortalInstance: Subscription;
   portalStatus: Subscription;
 
@@ -142,7 +142,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.r++;
       }
     } else if (this.counter > 1 && this.toggle) {
-      // this.counter--;
       if (this.r > 1) {
         this.r--;
       }
@@ -153,7 +152,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     }
 
-    for (var i = 0; i < this.counter; i++) {
+    for (let i = 0; i < this.counter; i++) {
       this.disappear(this.particles[i]);
       this.moveParticle(this.particles[i]);
       this.draw(this.particles[i]);
