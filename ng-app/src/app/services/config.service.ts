@@ -14,7 +14,7 @@ import { ajax } from 'rxjs/ajax';
 export class ConfigService {
 
   private localConfig: any = {};
-  private environmentConfig: Config = new Config();
+  private environmentConfig: any = {};
   private defaultConfig: any = {};
 
   constructor(
