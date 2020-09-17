@@ -34,7 +34,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.901.0-next.2",
+    "@angular-devkit/build-angular": "^0.1001.2",
     "@angular/cdk": "^9.0.0",
     "@angular/cli": "^9.1.0-next.2",
     "@angular/compiler-cli": "~9.1.0-next.3",
@@ -45,13 +45,13 @@
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.4.1",
+    "karma": "^5.2.2",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "^2.0.6",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.5.1",
-    "protractor": "~5.4.0",
-    "sonarqube-scanner": "^2.5.0",
+    "protractor": "^7.0.0",
+    "sonarqube-scanner": "^2.7.0",
     "ts-node": "~8.5.4",
     "tslint": "~5.20.1",
     "typescript": "^3.7.5"

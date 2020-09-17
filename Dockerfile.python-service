@@ -8,6 +8,6 @@ COPY ./python-service/ /root/python-service/
 
 WORKDIR /root/python-service/
 
-RUN pip install flask
+RUN pip install flask gpio
 
 CMD ["python", "app.py"]
