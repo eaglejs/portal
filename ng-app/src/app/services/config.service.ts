@@ -8,12 +8,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
 
+import config from '../../assets/config.json';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
 
-  private localConfig: any = {};
+  private localConfig: any = config;
   private environmentConfig: any = {};
   private defaultConfig: any = {};
 
