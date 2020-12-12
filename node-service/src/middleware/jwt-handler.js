@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
-const jwtKey = 'It is dangerous to go alone!';
-const jwtExpirySeconds = 300 // 5mins
+const config = require('../config.json');
 
 const createToken = (req, res, next, user) => {
   const payload = {
@@ -8,18 +7,18 @@ const createToken = (req, res, next, user) => {
     name: user.name,
     role: user.role
   }
-  const token = jwt.sign({ user: user.email }, jwtKey, {
+  const token = jwt.sign({ user: user.email }, config.jwtKey, {
     algorithm: 'HS256',
-    expiresIn: jwtExpirySeconds
+    expiresIn: config.jwtExpirySeconds
   })
-  const decoded = jwt.verify(token, jwtKey);
-  return res.json({ user: payload, jwt: token, expirationCountdown: jwtExpirySeconds * 1000, expiration: decoded.exp });
+  const decoded = jwt.verify(token, config.jwtKey);
+  return res.json({ user: payload, jwt: token, expirationCountdown: config.jwtExpirySeconds * 1000, expiration: decoded.exp });
 }
 
 const verifyToken = (req, res, next, token) => {
-  isVerified = false;
+  let isVerified = false;
   try {
-    if (jwt.verify(token, jwtKey)) {
+    if (jwt.verify(token, config.jwtKey)) {
       isVerified = true;
     };
   } catch (error) {
