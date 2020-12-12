@@ -3,5 +3,5 @@
   "auth": "auth/",
   "refreshInterval": "60000",
   "refreshBatchQueryInterval": "30000",
-  "server": "http://192.168.1.191:8080/api"
+  "server": "http://app.portal.com:8080/api/"
 }
