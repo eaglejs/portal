@@ -1,15 +1,14 @@
 #!flask/bin/python
 from flask import Flask, jsonify
 from GarageController import GarageController
+import yaml
 
-IPCONFIG = "0.0.0.0"
-PORT = 5000
-DEBUGGER = True
-RELOADER = True
+CONFIG = {}
+
+with open('./config.yaml') as file:
+    CONFIG = yaml.load(file, Loader=yaml.FullLoader)
 
 app = Flask(__name__)
-
-# app.debug = True
 
 gc = GarageController()
 
@@ -26,5 +25,5 @@ def getGarageState():
 
 
 if __name__ == "__main__":
-    app.run(host=IPCONFIG, port=PORT, debug=DEBUGGER, use_reloader=RELOADER)
+    app.run(host=CONFIG['IPCONFIG'], port=CONFIG['PORT'], debug=CONFIG['DEBUGGER'], use_reloader=CONFIG['RELOADER'])
 
