@@ -1,4 +1,4 @@
-FROM python:3.4-slim-jessie
+FROM python:3.9.1-buster
 
 LABEL Joshua S. Eagle
 
@@ -8,6 +8,6 @@ COPY ./python-service/ /root/python-service/
 
 WORKDIR /root/python-service/
 
-RUN pip install flask gpio
+RUN pip install flask gpio pyyaml
 
 CMD ["python", "app.py"]
